@@ -1,0 +1,29 @@
+{
+  "name": "@rappopo/deb-pouch",
+  "version": "0.0.1",
+  "description": "A PouchDB DAL that is cute!",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "dab",
+    "dab-pouch",
+    "pouchdb",
+    "data",
+    "access",
+    "dal"
+  ],
+  "author": "Ardhi Lukianto <ardhi@lukianto.com>",
+  "license": "MIT",
+  "dependencies": {
+    "pouchdb": "^6.3.4",
+    "pouchdb-find": "^6.3.4"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "chai-subset": "^1.6.0",
+    "lodash": "^4.17.4"
+  }
+}
