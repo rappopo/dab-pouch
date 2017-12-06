@@ -1,5 +1,13 @@
 # @rappopo/dab-pouch
 
+A Rappopo DAB implementation for PouchDB
+
+## Misc
+
+* [Methods](https://github.com/rappopo/dab)
+* [ChangeLog](CHANGELOG.md)
+* Donation: Bitcoin 16HVCkdaNMvw3YdBYGHbtt3K5bmpRmH74Y
+
 ## License
 
 (The MIT License)
