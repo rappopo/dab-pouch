@@ -14,12 +14,17 @@
     "access",
     "dal"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rappopo/dab-pouch.git"
+  },
   "author": "Ardhi Lukianto <ardhi@lukianto.com>",
   "license": "MIT",
   "dependencies": {
     "@rappopo/dab": "0.0.3",
     "pouchdb": "^6.3.4",
-    "pouchdb-find": "^6.3.4"
+    "pouchdb-find": "^6.3.4",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "chai": "^4.1.2",

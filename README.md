@@ -6,7 +6,7 @@ A [Rappopo DAB](https://github.com/rappopo/dab) implementation for PouchDB.
 
 Simply invoke this command in your project folder:
 
-	$ npm install --save @rappopo/dab-pouchdb
+	$ npm install --save @rappopo/dab-pouch
 
 And within your script:
 
