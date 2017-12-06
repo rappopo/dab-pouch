@@ -2,6 +2,7 @@
 
 const PouchDB = require('pouchdb'),
   path = require('path'),
+  uuid = require('uuid/v4'),
   Dab = require('@rappopo/dab')
 
 PouchDB.plugin(require('pouchdb-find'))
@@ -174,7 +175,7 @@ class DabPouch extends Dab {
         })
         this.client.put(newBody, params.options || {}, (err, result) => {
           if (err)
-            return callback(result.err)
+            return reject(result.err)
           let data = {
             success: true
           }
@@ -185,6 +186,163 @@ class DabPouch extends Dab {
       })
     })
   }
+
+  bulkCreate (body, params) {
+    [params] = this.sanitize(params)
+    this.setClient(params)
+    return new Promise((resolve, reject) => {
+      if (!this._.isArray(body))
+        return reject(new Error('Require array'))
+      this._.each(body, (b, i) => {
+        if (!b[this.options.idSrc])
+          b[this.options.idSrc] = uuid()
+        body[i] = this._.omit(b, ['_rev', '_deleted'])
+      })
+      const keys = this._(body).map(this.options.idSrc).value()
+      this.client.allDocs({
+        keys: keys
+      }, (err, result) => {
+        if (err)
+          return reject(err)
+        let info = result.rows
+        this.client.bulkDocs(body, (err, result) => {
+          if (err)
+            return reject(err)
+          let ok = 0, status = []
+          this._.each(result, (r, i) => {
+            let stat = { success: r.ok ? true : false }
+            stat[this.options.idDest] = r.id
+            if (!stat.success)
+              stat.reason = info[i] && info[i].value ? 'Exists' : this._.upperFirst(r.name)
+            else
+              ok++
+            status.push(stat)
+          })
+          let data = {
+            success: true,
+            stat: {
+              ok: ok,
+              fail: body.length - ok,
+              total: body.length
+            },
+            data: status
+          }
+          resolve(data)
+        })    
+      })
+    })
+  }
+
+  bulkUpdate (body, params) {
+    [params] = this.sanitize(params)
+    this.setClient(params)
+    return new Promise((resolve, reject) => {
+      if (!this._.isArray(body))
+        return reject(new Error('Require array'))
+      this._.each(body, (b, i) => {
+        if (!b[this.options.idSrc])
+          b[this.options.idSrc] = uuid() // will likely to introduce 'not-found'
+        body[i] = this._.omit(b, ['_rev', '_deleted'])
+      })
+      const keys = this._(body).map(this.options.idSrc).value()
+      this.client.allDocs({
+        keys: keys
+      }, (err, result) => {
+        if (err)
+          return reject(err)
+        let info = result.rows
+        // add rev for known doc
+        this._.each(body, (b, i) => {
+          if (info[i] && info[i].value) 
+            body[i]._rev = info[i].value.rev
+          else
+            body[i]._rev = '1-' + uuid() // will introduce purposed conflict
+        })
+        this.client.bulkDocs(body, (err, result) => {
+          if (err)
+            return reject(err)
+          let ok = 0, status = []
+          this._.each(result, (r, i) => {
+            let stat = { success: r.ok ? true : false }
+            stat[this.options.idDest] = r.id
+            if (!stat.success)
+              stat.reason = info[i] && info[i].error === 'not_found' ? 'Not found' : this._.upperFirst(r.name)
+            else
+              ok++
+            status.push(stat)
+          })
+          let data = {
+            success: true,
+            stat: {
+              ok: ok,
+              fail: body.length - ok,
+              total: body.length
+            },
+            data: status
+          }
+          resolve(data)
+        })    
+      })
+    })
+  }
+
+  bulkRemove (body, params) {
+    [params] = this.sanitize(params)
+    this.setClient(params)
+    return new Promise((resolve, reject) => {
+      if (!this._.isArray(body))
+        return reject(new Error('Require array'))
+      this._.each(body, (b, i) => {
+        if (!b[this.options.idSrc])
+          b[this.options.idSrc] = uuid() // will likely to introduce 'not-found'
+        body[i] = this._.omit(b, ['_rev', '_deleted'])
+      })
+      const keys = this._(body).map(this.options.idSrc).value()
+      this.client.allDocs({
+        keys: keys
+      }, (err, result) => {
+        if (err)
+          return reject(err)
+        let info = result.rows
+        // add rev for known doc
+        this._.each(body, (b, i) => {
+          let newB = this._.pick(b, this.options.retainOnRemove)
+          newB._deleted = true
+          newB._id = b._id
+          if (info[i] && info[i].value) 
+            newB._rev = info[i].value.rev
+          else
+            newB._rev = '1-' + uuid() // will introduce purposed conflict
+          body[i] = newB
+        })
+        this.client.bulkDocs(body, (err, result) => {
+          if (err)
+            return reject(err)
+          let ok = 0, status = []
+          this._.each(result, (r, i) => {
+            let stat = { success: r.ok ? true : false }
+            stat[this.options.idDest] = r.id
+            if (!stat.success)
+              stat.reason = info[i] && info[i].error === 'not_found' ? 'Not found' : this._.upperFirst(r.name)
+            else
+              ok++
+            status.push(stat)
+          })
+          let data = {
+            success: true,
+            stat: {
+              ok: ok,
+              fail: body.length - ok,
+              total: body.length
+            },
+            data: status
+          }
+          resolve(data)
+        })    
+      })
+    })
+  }
+
 }
 
 module.exports = DabPouch
