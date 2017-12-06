@@ -1,6 +1,6 @@
 {
   "name": "@rappopo/deb-pouch",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A PouchDB data access layer that is NOT cute!",
   "main": "index.js",
   "scripts": {
