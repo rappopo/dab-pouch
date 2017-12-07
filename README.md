@@ -6,17 +6,21 @@ A [Rappopo DAB](https://github.com/rappopo/dab) implementation for PouchDB.
 
 Simply invoke this command in your project folder:
 
-	$ npm install --save @rappopo/dab-pouch
+```
+$ npm install --save @rappopo/dab-pouch
+```
 
 And within your script:
 
-	const DabPouch = require('@rappopo/dab-pouch')
-	const dab = new DabPouch({
-		path: '/home/me/pouchdb',
-		dbName: 'mydb'
-	})
-	...
-	dab.findOne('my-doc').then(function(doc) { ... })
+```javascript
+const DabPouch = require('@rappopo/dab-pouch')
+const dab = new DabPouch({
+  path: '/home/me/pouchdb',
+  dbName: 'mydb'
+})
+...
+dab.findOne('my-doc').then(function(doc) { ... })
+```
 
 ## Options
 
@@ -28,20 +32,24 @@ And within your script:
 
 When PouchDB delete a document, it actually PUTs a document with content like this:
 
-	{
-		"_id": "<doc_id>",
-		"_rev": "<rev_id>",
-		"_deleted": true
-	}
+```javascript
+{
+  "_id": "<doc_id>",
+  "_rev": "<rev_id>",
+  "_deleted": true
+}
+```
 
 But sometimes you want to also have some columns to be put on that deleted document. The `retainOnRemove` simply left those columns intact, e.g:
 
-	{
-		"_id": "<doc_id>",
-		"_rev": "<rev_id>",		
-		"_deleted": true,
-		"type": "ADDRESS"
-	}
+```javascript
+{
+  "_id": "<doc_id>",
+  "_rev": "<rev_id>",
+  "_deleted": true,
+  "type": "<mytype>"
+}
+```
 
 ## Misc
 

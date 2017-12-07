@@ -2,7 +2,6 @@
 
 const PouchDB = require('pouchdb'),
   path = require('path'),
-  uuid = require('uuid/v4'),
   Dab = require('@rappopo/dab')
 
 PouchDB.plugin(require('pouchdb-find'))
@@ -195,7 +194,7 @@ class DabPouch extends Dab {
         return reject(new Error('Require array'))
       this._.each(body, (b, i) => {
         if (!b[this.options.idSrc])
-          b[this.options.idSrc] = uuid()
+          b[this.options.idSrc] = this.uuid()
         body[i] = this._.omit(b, ['_rev', '_deleted'])
       })
       const keys = this._(body).map(this.options.idSrc).value()
@@ -241,7 +240,7 @@ class DabPouch extends Dab {
         return reject(new Error('Require array'))
       this._.each(body, (b, i) => {
         if (!b[this.options.idSrc])
-          b[this.options.idSrc] = uuid() // will likely to introduce 'not-found'
+          b[this.options.idSrc] = this.uuid() // will likely to introduce 'not-found'
         body[i] = this._.omit(b, ['_rev', '_deleted'])
       })
       const keys = this._(body).map(this.options.idSrc).value()
@@ -256,7 +255,7 @@ class DabPouch extends Dab {
           if (info[i] && info[i].value) 
             body[i]._rev = info[i].value.rev
           else
-            body[i]._rev = '1-' + uuid() // will introduce purposed conflict
+            body[i]._rev = '1-' + this.uuid() // will introduce purposed conflict
         })
         this.client.bulkDocs(body, (err, result) => {
           if (err)
@@ -294,7 +293,7 @@ class DabPouch extends Dab {
         return reject(new Error('Require array'))
       this._.each(body, (b, i) => {
         if (!b[this.options.idSrc])
-          b[this.options.idSrc] = uuid() // will likely to introduce 'not-found'
+          b[this.options.idSrc] = this.uuid() // will likely to introduce 'not-found'
         body[i] = this._.omit(b, ['_rev', '_deleted'])
       })
       const keys = this._(body).map(this.options.idSrc).value()
@@ -312,7 +311,7 @@ class DabPouch extends Dab {
           if (info[i] && info[i].value) 
             newB._rev = info[i].value.rev
           else
-            newB._rev = '1-' + uuid() // will introduce purposed conflict
+            newB._rev = '1-' + this.uuid() // will introduce purposed conflict
           body[i] = newB
         })
         this.client.bulkDocs(body, (err, result) => {

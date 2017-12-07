@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.4
+
+* Adding .asCallback
+
+## 0.0.3
+
+* Code cleanup
+
 ## 0.0.2
 
 * Adding bulkCreate method
