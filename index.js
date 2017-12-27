@@ -13,8 +13,6 @@ class DabPouch extends Dab {
 
   setOptions (options) {
     super.setOptions(this._.merge(this.options, {
-      idSrc: '_id',
-      idDest: options.idDest || options.idSrc || '_id',
       path: options.path || '/tmp',
       dbName: options.dbName || 'test',
       retainOnRemove: options.retainOnRemove || [],
@@ -101,13 +99,8 @@ class DabPouch extends Dab {
     [params, body] = this.sanitize(params, body)
     this.setClient(params)
     return new Promise((resolve, reject) => {
-      if (body[this.options.idDest] && this.options.idDest !== this.options.idSrc) {
-        body[this.options.idSrc] = body[this.options.idDest]
-        delete body[this.options.idDest]
-      }
-      let id = body[this.options.idSrc]
-      if (id) {
-        this._findOne(id, params, result => {
+      if (body._id) {
+        this._findOne(body._id, params, result => {
           if (result.success) 
             return reject(new Error('Exists'))
           this._create(body, params, result => {
@@ -131,14 +124,14 @@ class DabPouch extends Dab {
   update (id, body, params) {
     [params, body] = this.sanitize(params, body)
     this.setClient(params)
-    body = this._.omit(body, [this.options.idDest || this.options.idSrc])
+    body = this._.omit(body, ['_id'])
     return new Promise((resolve, reject) => {
       this._findOne(id, params, result => {
         if (!result.success)
           return reject(result.err)
         let source = result.data
         if (params.fullReplace) {
-          body[this.options.idSrc] = id
+          body._id = id
           body._rev = result.data._rev
         } else {
           body = this._.merge(result.data, body)
@@ -193,11 +186,11 @@ class DabPouch extends Dab {
       if (!this._.isArray(body))
         return reject(new Error('Require array'))
       this._.each(body, (b, i) => {
-        if (!b[this.options.idSrc])
-          b[this.options.idSrc] = this.uuid()
+        if (!b._id)
+          b._id = this.uuid()
         body[i] = this._.omit(b, ['_rev', '_deleted'])
       })
-      const keys = this._(body).map(this.options.idSrc).value()
+      const keys = this._(body).map('_id').value()
       this.client.allDocs({
         keys: keys
       }, (err, result) => {
@@ -210,7 +203,7 @@ class DabPouch extends Dab {
           let ok = 0, status = []
           this._.each(result, (r, i) => {
             let stat = { success: r.ok ? true : false }
-            stat[this.options.idDest] = r.id
+            stat._id = r.id
             if (!stat.success)
               stat.message = info[i] && info[i].value ? 'Exists' : this._.upperFirst(r.name)
             else
@@ -240,11 +233,11 @@ class DabPouch extends Dab {
       if (!this._.isArray(body))
         return reject(new Error('Require array'))
       this._.each(body, (b, i) => {
-        if (!b[this.options.idSrc])
-          b[this.options.idSrc] = this.uuid() // will likely to introduce 'not-found'
+        if (!b._id)
+          b._id = this.uuid() // will likely to introduce 'not-found'
         body[i] = this._.omit(b, ['_rev', '_deleted'])
       })
-      const keys = this._(body).map(this.options.idSrc).value()
+      const keys = this._(body).map('_id').value()
       this.client.allDocs({
         keys: keys
       }, (err, result) => {
@@ -264,7 +257,7 @@ class DabPouch extends Dab {
           let ok = 0, status = []
           this._.each(result, (r, i) => {
             let stat = { success: r.ok ? true : false }
-            stat[this.options.idDest] = r.id
+            stat._id = r.id
             if (!stat.success)
               stat.message = info[i] && info[i].error === 'not_found' ? 'Not found' : this._.upperFirst(r.name)
             else
@@ -322,7 +315,7 @@ class DabPouch extends Dab {
           let ok = 0, status = []
           this._.each(result, (r, i) => {
             let stat = { success: r.ok ? true : false }
-            stat[this.options.idDest] = r.id
+            stat._id = r.id
             if (!stat.success)
               stat.message = info[i] && info[i].error === 'not_found' ? 'Not found' : this._.upperFirst(r.name)
             else
