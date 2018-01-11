@@ -1,6 +1,6 @@
 {
   "name": "@rappopo/dab-pouch",
-  "version": "0.0.9",
+  "version": "0.5.0",
   "description": "A PouchDB data access layer that is NOT cute!",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "author": "Ardhi Lukianto <ardhi@lukianto.com>",
   "license": "MIT",
   "dependencies": {
-    "@rappopo/dab": "0.0.11",
+    "@rappopo/dab": "0.5.0",
     "pouchdb": "^6.3.4",
     "pouchdb-find": "^6.3.4"
   },

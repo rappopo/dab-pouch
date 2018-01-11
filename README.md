@@ -15,18 +15,21 @@ And within your script:
 ```javascript
 const DabPouch = require('@rappopo/dab-pouch')
 const dab = new DabPouch({
-  path: '/home/me/pouchdb',
-  dbName: 'mydb'
+  path: '/home/me/pouchdb'
 })
+// prepare collections
+dab.createCollection({ name: 'test' })
+  .then(result => {
+    return dab.bulkCreate(data, { collection: 'test' })
+  })
 ...
-dab.findOne('my-doc').then(function(doc) { ... })
+// lets dab!
+dab.findOne('my-doc', 'test').then(function(doc) { ... })
 ```
 
 ## Options
 
 `path`: the path where all PouchDB folder will be saved and reside. If it not provided, it'll defaults to */tmp*
-
-`dbName`: the database name. You'll most likely want to give a custom name, otherwise it defaults to *test*
 
 `retainOnRemove`: array of columns to retain when a document is deleted. Default: []. 
 
@@ -63,6 +66,9 @@ But sometimes you want to also have some columns to be put on that deleted docum
 * [x] [bulkRemove](https://docs.rappopo.com/dab/method/bulk-remove/)
 * [x] [copyFrom](https://docs.rappopo.com/dab/method/copy-from/)
 * [x] [copyTo](https://docs.rappopo.com/dab/method/copy-to/)
+* [x] [createCollection](https://docs.rappopo.com/dab/method/create-collection/)
+* [x] [renameCollection](https://docs.rappopo.com/dab/method/rename-collection/)
+* [x] [removeCollection](https://docs.rappopo.com/dab/method/remove-collection/)
 
 ## Misc
 

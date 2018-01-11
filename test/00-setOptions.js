@@ -13,36 +13,16 @@ describe('setOptions', function () {
   it('should return the default options', function () {
     const cls = new Cls()
     expect(cls.options).to.include({
-      path: '/tmp',
-      dbName: 'test',
-      inMemory: false
+      path: '/tmp'
     })
   })
 
   it('should return options with custom path', function () {
     const cls = new Cls({ 
-      path: '/home/username'
+      path: '/home/user/tmp',
     })
     expect(cls.options).to.include({
-      path: '/home/username'
-    })
-  })
-
-  it('should return options with custom dbName', function () {
-    const cls = new Cls({ 
-      dbName: 'mydb'
-    })
-    expect(cls.options).to.include({
-      dbName: 'mydb'
-    })
-  })
-
-  it('should return options with custom inMemory', function () {
-    const cls = new Cls({ 
-      inMemory: false
-    })
-    expect(cls.options).to.include({
-      inMemory: false
+      path: '/home/user/tmp',
     })
   })
 
