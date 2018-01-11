@@ -69,17 +69,9 @@ class DabPouch extends Dab {
     [params] = this.sanitize(params)
     let limit = params.limit || this.options.limit,
       skip = ((params.page || 1) - 1) * limit,
-      sort = params.sort,
-      query = params.query || {},
-      sortKeys = []
-    if (this._.isArray(sort))
-      this._.each(sort, s => {
-        this._.forOwn(s, (v, k) => {
-          sortKeys.push(k)
-        })
-      })
+      query = params.query || {}
 
-    sortKeys = this._.uniq(sortKeys)
+    let sortKeys = this._.keys(params.sort) || []
     if (sortKeys.length > 0) {
       let qidx = {}
       this._.each(sortKeys, k => {
@@ -97,8 +89,14 @@ class DabPouch extends Dab {
         limit: limit,
         skip: skip
       }
-      if (sort) {
-        q.sort = sort
+      if (params.sort) {
+        let sort = []
+        this._.forOwn(params.sort, (v, k) => {
+          let o = {}
+          o[k] = v === -1 ? 'desc' : 'asc'
+          sort.push(o)
+        })
+        q.sort = sort 
       }
       this.client[params.collection].find(q)
       .then(result => {
