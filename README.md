@@ -31,7 +31,7 @@ dab.findOne('my-doc', 'test').then(function(doc) { ... })
 
 `path`: the path where all PouchDB folder will be saved and reside. If it not provided, it'll defaults to */tmp*
 
-`retainOnRemove`: array of columns to retain when a document is deleted. Default: []. 
+`retainOnRemove`: array of columns to retain when a document is deleted. Default: [].
 
 When PouchDB delete a document, it actually PUTs a document with content like this:
 
@@ -67,22 +67,13 @@ But sometimes you want to also have some columns to be put on that deleted docum
 * [x] [copyFrom](https://docs.rappopo.com/dab/method/copy-from/)
 * [x] [copyTo](https://docs.rappopo.com/dab/method/copy-to/)
 * [x] [createCollection](https://docs.rappopo.com/dab/method/create-collection/)
-* [x] [renameCollection](https://docs.rappopo.com/dab/method/rename-collection/)
+* [ ] [renameCollection](https://docs.rappopo.com/dab/method/rename-collection/)
 * [x] [removeCollection](https://docs.rappopo.com/dab/method/remove-collection/)
 
-## Misc
-
-* [ChangeLog](CHANGELOG.md)
-* Donation: Bitcoin **16HVCkdaNMvw3YdBYGHbtt3K5bmpRmH74Y**
+## Donation
+* [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ardhilukianto)
+* Bitcoin **16HVCkdaNMvw3YdBYGHbtt3K5bmpRmH74Y**
 
 ## License
 
-(The MIT License)
-
-Copyright © 2017 Ardhi Lukianto <ardhi@lukianto.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+[MIT](LICENSE.md)

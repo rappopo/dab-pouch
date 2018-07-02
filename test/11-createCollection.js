@@ -31,7 +31,7 @@ describe('createCollection', function () {
     const cls = new Cls(lib.options)
     cls.createCollection({ name: 'test' })
       .then(result => {
-        expect(result).to.have.property('success', true)
+        expect(result).to.be.true
         done()
       })
   })

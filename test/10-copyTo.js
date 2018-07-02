@@ -2,7 +2,7 @@
 
 const chai = require('chai'),
   chaiAsPromised = require("chai-as-promised"),
-  chaiSubset = require('chai-subset'),  
+  chaiSubset = require('chai-subset'),
   expect = chai.expect
 
 chai.use(chaiSubset)
@@ -84,7 +84,6 @@ describe('copyTo', function () {
         return cls.copyTo('/tmp/dab-copy-to.json', { collection: 'mask1', withDetail: true })
       })
       .then(result => {
-        console.log(result)
         expect(result.success).to.be.true,
         expect(result.stat).to.have.property('ok', 5)
         expect(result.stat).to.have.property('fail', 0)
@@ -95,5 +94,4 @@ describe('copyTo', function () {
         done()
       })
   })
-
 })

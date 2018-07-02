@@ -53,17 +53,17 @@ class DabPouch extends Dab {
         .then(result => {
           if (!rebuild) {
             delete this.client[name]
-            return resolve({ success: true })
+            return resolve(true)
           }
           return this.client[name].destroy()
         })
         .then(result => {
           delete this.client[name]
-          resolve({ success: true })
+          resolve(true)
         })
         .catch(reject)
     })
-  }  
+  }
 
   find (params) {
     [params] = this.sanitize(params)
@@ -96,7 +96,7 @@ class DabPouch extends Dab {
           o[k] = v === -1 ? 'desc' : 'asc'
           sort.push(o)
         })
-        q.sort = sort 
+        q.sort = sort
       }
       this.client[params.collection].find(q)
       .then(result => {
@@ -169,7 +169,7 @@ class DabPouch extends Dab {
     return new Promise((resolve, reject) => {
       if (body._id) {
         this._findOne(body._id, params, result => {
-          if (result.success) 
+          if (result.success)
             return reject(new Error('Document already exists'))
           this._create(body, params, result => {
             if (!result.success)
@@ -184,7 +184,7 @@ class DabPouch extends Dab {
             return reject(result.err)
           result.data = this.convert(result.data, { collection: params.collection })
           resolve(result)
-        })        
+        })
       }
     })
   }
@@ -247,7 +247,7 @@ class DabPouch extends Dab {
   }
 
   bulkCreate (body, params) {
-    [params] = this.sanitize(params)
+    [params, body] = this.sanitize(params, body)
     return new Promise((resolve, reject) => {
       let e = this.setClient(params)
       if (e instanceof Error)
@@ -290,13 +290,13 @@ class DabPouch extends Dab {
           if (params.withDetail)
             data.detail = status
           resolve(data)
-        })    
+        })
       })
     })
   }
 
   bulkUpdate (body, params) {
-    [params] = this.sanitize(params)
+    [params, body] = this.sanitize(params, body)
     this.setClient(params)
     return new Promise((resolve, reject) => {
       let e = this.setClient(params)
@@ -318,7 +318,7 @@ class DabPouch extends Dab {
         let info = result.rows
         // add rev for known doc
         this._.each(body, (b, i) => {
-          if (info[i] && info[i].value) 
+          if (info[i] && info[i].value)
             body[i]._rev = info[i].value.rev
           else
             body[i]._rev = '1-' + this.uuid() // will introduce purposed conflict
@@ -347,13 +347,13 @@ class DabPouch extends Dab {
           if (params.withDetail)
             data.detail = status
           resolve(data)
-        })    
+        })
       })
     })
   }
 
   bulkRemove (body, params) {
-    [params] = this.sanitize(params)
+    [params, body] = this.sanitize(params, body)
     this.setClient(params)
     return new Promise((resolve, reject) => {
       let e = this.setClient(params)
@@ -408,7 +408,7 @@ class DabPouch extends Dab {
           if (params.withDetail)
             data.detail = status
           resolve(data)
-        })    
+        })
       })
     })
   }

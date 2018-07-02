@@ -56,7 +56,7 @@ describe('create', function () {
         expect(result.success).to.be.true
         expect(result.data).to.have.property('_id', 'jason-bourne')
         expect(result.data).to.have.property('name', 'Jason Bourne')
-        done()        
+        done()
       })
   })
 
