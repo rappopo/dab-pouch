@@ -1,13 +1,13 @@
 'use strict'
 
-const chai = require('chai'),
-  chaiAsPromised = require("chai-as-promised"),
-  expect = chai.expect
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const expect = chai.expect
 
 chai.use(chaiAsPromised)
 
-const Cls = require('../index'),
-  lib = require('./_lib')
+const Cls = require('../index')
+const lib = require('./_lib')
 
 describe('remove', function () {
   beforeEach(function (done) {
@@ -49,7 +49,7 @@ describe('remove', function () {
         return cls.remove('jack-bauer', { collection: 'test' })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         done()
       })
   })
@@ -61,7 +61,7 @@ describe('remove', function () {
         return cls.remove('jack-bauer', { collection: 'test', withSource: true })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result).to.have.property('source').that.include(lib.docs[0])
         done()
       })
@@ -74,7 +74,7 @@ describe('remove', function () {
         return cls.remove('jack-bauer', { collection: 'full', withSource: true })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.source).to.have.property('_id', 'jack-bauer')
         expect(result.source).to.have.property('name', 'Jack Bauer')
         expect(result.source).to.have.property('age', null)
@@ -89,7 +89,7 @@ describe('remove', function () {
         return cls.remove('jack-bauer', { collection: 'hidden', withSource: true })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.source).to.have.property('_id', 'jack-bauer')
         expect(result.source).to.not.have.property('name')
         expect(result.source).to.have.property('age', null)
@@ -104,12 +104,11 @@ describe('remove', function () {
         return cls.remove('jack-bauer', { collection: 'mask', withSource: true })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.source).to.have.property('id', 'jack-bauer')
         expect(result.source).to.have.property('fullname', 'Jack Bauer')
         expect(result.source).to.have.property('age', null)
         done()
       })
   })
-
 })

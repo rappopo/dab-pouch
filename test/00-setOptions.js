@@ -1,13 +1,12 @@
 'use strict'
 
-const chai = require('chai'),
-  expect = chai.expect,
-  chaiSubset = require('chai-subset')
+const chai = require('chai')
+const expect = chai.expect
+const chaiSubset = require('chai-subset')
 
 chai.use(chaiSubset)
 
-const Cls = require('../index'),
-  lib = require('./_lib')
+const Cls = require('../index')
 
 describe('setOptions', function () {
   it('should return the default options', function () {
@@ -18,14 +17,11 @@ describe('setOptions', function () {
   })
 
   it('should return options with custom path', function () {
-    const cls = new Cls({ 
-      path: '/home/user/tmp',
+    const cls = new Cls({
+      path: '/home/user/tmp'
     })
     expect(cls.options).to.include({
-      path: '/home/user/tmp',
+      path: '/home/user/tmp'
     })
   })
-
 })
-
-

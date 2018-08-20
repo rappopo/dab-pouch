@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.2
+
+* Updated to @rappopo/dab@0.6.9
+* Updated to pouchdb@7.0.0
+* Standard JS compliance
+
+
 ## 0.6.1
 
 * Updated to @rappopo/dab@0.6.1

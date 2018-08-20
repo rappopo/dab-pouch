@@ -1,13 +1,13 @@
 'use strict'
 
-const chai = require('chai'),
-  chaiAsPromised = require("chai-as-promised"),
-  expect = chai.expect
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const expect = chai.expect
 
 chai.use(chaiAsPromised)
 
-const Cls = require('../index'),
-  lib = require('./_lib')
+const Cls = require('../index')
+const lib = require('./_lib')
 
 describe('createCollection', function () {
   it('should return error if no collection provided', function () {
@@ -31,9 +31,8 @@ describe('createCollection', function () {
     const cls = new Cls(lib.options)
     cls.createCollection({ name: 'test' })
       .then(result => {
-        expect(result).to.be.true
+        expect(result).to.equal(true)
         done()
       })
   })
-
 })

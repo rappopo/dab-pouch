@@ -1,9 +1,9 @@
 'use strict'
 
-const path = require('path'),
-  PouchDB = require('pouchdb'),
-  async = require('async'),
-  _ = require('lodash')
+const path = require('path')
+const PouchDB = require('pouchdb')
+const async = require('async')
+const _ = require('lodash')
 
 module.exports = {
   _: _,
@@ -65,24 +65,24 @@ module.exports = {
   resetDb: function (callback, fillIn = true) {
     let me = this
 
-    async.mapSeries(['schema', 'schemaFull', 'schemaHidden', 'schemaMask', 'schemaBulk', 'schemaDummy', 'schemaMaskDummy'], function(s, callb) {
+    async.mapSeries(['schema', 'schemaFull', 'schemaHidden', 'schemaMask', 'schemaBulk',
+      'schemaDummy', 'schemaMaskDummy'], function (s, callb) {
       let db = new PouchDB(path.join(me.options.path, me[s].name))
       db.destroy(function (err) {
         if (err) return callb(err)
         db = new PouchDB(path.join(me.options.path, me[s].name))
-        if (['test1', 'mask1'].indexOf(me[s].name) > -1 || !fillIn)
-          return callb(null, null)
-        db.bulkDocs(me.docs, function(err, results) {
+        if (['test1', 'mask1'].indexOf(me[s].name) > -1 || !fillIn) return callb(null, null)
+        db.bulkDocs(me.docs, function (err, results) {
+          if (err) return callb(err)
           db.createIndex({
             index: {
               fields: ['name', 'age']
             }
-          }, function(err) {
-            callb(null, null)
+          }, function (err) {
+            callb(err)
           })
         })
-      })      
+      })
     }, callback)
   }
 }
-

@@ -1,17 +1,17 @@
 'use strict'
 
-const chai = require('chai'),
-  chaiAsPromised = require('chai-as-promised'),
-  expect = chai.expect
+const chai = require('chai')
+const chaiAsPromised = require('chai-as-promised')
+const expect = chai.expect
 
 chai.use(chaiAsPromised)
 
-const Cls = require('../index'),
-  lib = require('./_lib'),
-  body = {
-    _id: 'jason-bourne',
-    name: 'Jason Bourne'
-  }
+const Cls = require('../index')
+const lib = require('./_lib')
+const body = {
+  _id: 'jason-bourne',
+  name: 'Jason Bourne'
+}
 
 describe('create', function () {
   beforeEach(function (done) {
@@ -53,7 +53,7 @@ describe('create', function () {
         return cls.create(body, { collection: 'test' })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.data).to.have.property('_id', 'jason-bourne')
         expect(result.data).to.have.property('name', 'Jason Bourne')
         done()
@@ -67,7 +67,7 @@ describe('create', function () {
         return cls.create(body, { collection: 'full' })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.data).to.have.property('_id', 'jason-bourne')
         expect(result.data).to.have.property('name', 'Jason Bourne')
         expect(result.data).to.have.property('age', null)
@@ -82,7 +82,7 @@ describe('create', function () {
         return cls.create(body, { collection: 'hidden' })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.data).to.have.property('_id', 'jason-bourne')
         expect(result.data).to.not.have.property('name')
         expect(result.data).to.have.property('age', null)
@@ -97,7 +97,7 @@ describe('create', function () {
         return cls.create({ id: 'jason-bourne', fullname: 'Jason Bourne' }, { collection: 'mask' })
       })
       .then(result => {
-        expect(result.success).to.be.true
+        expect(result.success).to.equal(true)
         expect(result.data).to.have.property('id', 'jason-bourne')
         expect(result.data).to.have.property('fullname', 'Jason Bourne')
         expect(result.data).to.have.property('age', null)
