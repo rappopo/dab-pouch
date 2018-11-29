@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.3
+
+* Bug fix on remove method
+
 ## 0.6.2
 
 * Updated to @rappopo/dab@0.6.9

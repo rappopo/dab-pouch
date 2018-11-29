@@ -74,12 +74,15 @@ module.exports = {
         if (['test1', 'mask1'].indexOf(me[s].name) > -1 || !fillIn) return callb(null, null)
         db.bulkDocs(me.docs, function (err, results) {
           if (err) return callb(err)
-          db.createIndex({
-            index: {
-              fields: ['name', 'age']
-            }
-          }, function (err) {
-            callb(err)
+          async.mapSeries(['name', 'age'], function (i, cb) {
+            db.createIndex({
+              index: { fields: [i] },
+              name: i
+            }, function (e) {
+              cb(null)
+            })
+          }, function () {
+            callb()
           })
         })
       })

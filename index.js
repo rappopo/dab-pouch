@@ -213,6 +213,8 @@ class DabPouch extends Dab {
     [params] = this.sanitize(params)
     this.setClient(params)
     return new Promise((resolve, reject) => {
+      let e = this.setClient(params)
+      if (e instanceof Error) return reject(e)
       this._findOne(id, params, (e, result) => {
         if (!result.success) return reject(result.err)
         let source = result.data
